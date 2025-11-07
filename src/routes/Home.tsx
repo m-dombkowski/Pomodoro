@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import CustomTimer from "../components/CustomTimer";
 
 const MainWrapper = styled.div`
   display: flex;
@@ -12,15 +13,11 @@ const Title = styled.h1`
   color: #333;
 `;
 
-const TextInput = styled.input<{ $primary?: boolean }>`
-  padding: 10px;
-`;
-
 export default function Home() {
   return (
     <MainWrapper>
       <Title>Home</Title>
-      <TextInput placeholder="Type time value " type="text" />
+      <CustomTimer />
     </MainWrapper>
   );
 }
