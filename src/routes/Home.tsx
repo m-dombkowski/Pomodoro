@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import CustomTimer from "../components/CustomTimer";
+import { useTimer } from "../stores/TimerStore";
+import SetTimer from "../components/SetTimer";
 
 const MainWrapper = styled.div`
   display: flex;
@@ -13,11 +15,27 @@ const Title = styled.h1`
   color: #333;
 `;
 
+const SetTimers = [
+  { InputName: "Pomodoro", TimerValue: 1500 }, // 25 minutes
+  { InputName: "Short", TimerValue: 300 }, // 5 minutes
+  { InputName: "Long", TimerValue: 900 }, // 15 minutes
+];
+
 export default function Home() {
+  const context = useTimer();
+
   return (
     <MainWrapper>
       <Title>Home</Title>
+      <Title>{context.currentTimer}</Title>
       <CustomTimer />
+      {SetTimers.map(({ InputName, TimerValue }) => (
+        <SetTimer
+          key={InputName}
+          InputName={InputName}
+          TimerValue={TimerValue}
+        />
+      ))}
     </MainWrapper>
   );
 }
