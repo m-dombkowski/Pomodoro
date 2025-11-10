@@ -32,10 +32,18 @@ const SetTimers = [
 export default function Home() {
   const context = useTimer();
 
+  const formatedTimeMinutes = Math.floor(context.currentTimer / 60)
+    .toString()
+    .padStart(2, "0");
+  const formatedTimeSeconds = (context.currentTimer % 60)
+    .toString()
+    .padStart(2, "0");
   return (
     <MainWrapper>
       <Title>Home</Title>
-      <Title>{context.currentTimer}</Title>
+      <Title>
+        {formatedTimeMinutes}:{formatedTimeSeconds}{" "}
+      </Title>
       <Controls />
       <InnerWrapper>
         <CustomTimer />
