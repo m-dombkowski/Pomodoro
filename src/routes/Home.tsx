@@ -2,12 +2,20 @@ import styled from "styled-components";
 import CustomTimer from "../components/CustomTimer";
 import { useTimer } from "../stores/TimerStore";
 import SetTimer from "../components/SetTimer";
+import Controls from "../components/Controls";
 
 const MainWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+`;
+
+const InnerWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
 `;
 
 const Title = styled.h1`
@@ -28,14 +36,18 @@ export default function Home() {
     <MainWrapper>
       <Title>Home</Title>
       <Title>{context.currentTimer}</Title>
-      <CustomTimer />
-      {SetTimers.map(({ InputName, TimerValue }) => (
-        <SetTimer
-          key={InputName}
-          InputName={InputName}
-          TimerValue={TimerValue}
-        />
-      ))}
+      <Controls />
+      <InnerWrapper>
+        <CustomTimer />
+
+        {SetTimers.map(({ InputName, TimerValue }) => (
+          <SetTimer
+            key={InputName}
+            InputName={InputName}
+            TimerValue={TimerValue}
+          />
+        ))}
+      </InnerWrapper>
     </MainWrapper>
   );
 }
