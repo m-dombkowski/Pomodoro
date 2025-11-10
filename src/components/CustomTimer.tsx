@@ -22,7 +22,7 @@ export default function CustomTimer() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch({ type: "SET_CURRENT_TIMER", currentTimer: timeValue ?? 0 });
+    dispatch({ type: "UPDATE_TIMER", currentTimer: timeValue ?? 0 });
     console.log(context.currentTimer);
   };
   return (

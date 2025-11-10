@@ -17,8 +17,8 @@ export default function SetTimer({
   const dispatch = useTimerDispatch();
 
   const setTimer = () => {
-    dispatch({ type: "SET_CURRENT_TIMER", currentTimer: TimerValue });
+    dispatch({ type: "UPDATE_TIMER", currentTimer: TimerValue });
   };
 
-  return <Input onClick={setTimer} value={InputName} />;
+  return <Input onClick={setTimer} defaultValue={InputName} />;
 }
