@@ -13,7 +13,11 @@ type TimerAction =
   | { type: "START_TIMER"; startTime: number }
   | { type: "STOP_TIMER"; stopTime: number }
   | { type: "RESET_TIMER" }
-  | { type: "UPDATE_TIMER"; currentTimer: number };
+  | {
+      type: "UPDATE_TIMER";
+      currentTimer: number;
+      startTime?: number;
+    };
 
 const initialTimer: Timer = {
   isRunning: false,
@@ -47,7 +51,7 @@ const timerReducer = (timer: Timer, action: TimerAction) => {
         ...timer,
         isRunning: true,
         startTime: action.startTime,
-        currentTimer: timer.elapsedTime ?? timer.currentTimer,
+        currentTimer: timer.currentTimer ?? 0,
       };
     case "STOP_TIMER":
       return {
@@ -68,6 +72,7 @@ const timerReducer = (timer: Timer, action: TimerAction) => {
       return {
         ...timer,
         currentTimer: action.currentTimer,
+        startTime: action.startTime ?? timer.startTime,
       };
 
     default: {
@@ -114,4 +119,8 @@ export const manageCountDown = (
       }
     }
   }, 1000);
+};
+
+export const killInterval = () => {
+  clearInterval(interval);
 };
