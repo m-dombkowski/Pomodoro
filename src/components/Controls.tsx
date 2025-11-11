@@ -3,10 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faPause, faPlay, faRepeat } from "@fortawesome/free-solid-svg-icons";
 import {
+  killInterval,
   manageCountDown,
   useTimer,
   useTimerDispatch,
 } from "../stores/TimerStore";
+import { useState } from "react";
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,34 +31,48 @@ const ControlButton = styled.button<{ $disabled?: boolean }>`
 
 export default function Controls() {
   const dispatch = useTimerDispatch();
-  const context = useTimer();
+  const { currentTimer, startTime, isRunning } = useTimer();
+
+  const [startingTime, setStartginTime] = useState<number | null>(null);
 
   const handleStart = () => {
+    setStartginTime(currentTimer);
     dispatch({
       type: "START_TIMER",
-      startTime: context.startTime ?? context.currentTimer,
+      startTime: startTime ?? currentTimer,
     });
 
-    manageCountDown(context.currentTimer, dispatch, true);
+    manageCountDown(currentTimer, dispatch, true);
   };
 
   const handleStop = () => {
     dispatch({
       type: "STOP_TIMER",
-      stopTime: context.currentTimer,
+      stopTime: currentTimer,
     });
-    manageCountDown(context.currentTimer, dispatch, false);
+    killInterval();
+    // manageCountDown(currentTimer, dispatch, false);
+  };
+
+  const handleReset = () => {
+    killInterval();
+    dispatch({ type: "RESET_TIMER" });
+    console.log(startingTime, currentTimer);
+    dispatch({
+      type: "UPDATE_TIMER",
+      currentTimer: startingTime ?? currentTimer,
+    });
   };
 
   return (
     <Wrapper>
-      <ControlButton $disabled={context.isRunning} onClick={handleStart}>
+      <ControlButton $disabled={isRunning} onClick={handleStart}>
         <FontAwesomeIcon icon={faPlay} />
       </ControlButton>
       <ControlButton onClick={handleStop}>
         <FontAwesomeIcon icon={faPause} />
       </ControlButton>
-      <ControlButton>
+      <ControlButton onClick={handleReset}>
         <FontAwesomeIcon icon={faRepeat} />
       </ControlButton>
     </Wrapper>
