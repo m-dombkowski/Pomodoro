@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import CustomTimer from "../components/CustomTimer";
+import CustomTimer from "../components/Countdown/CustomTimer";
 import { useTimer } from "../stores/TimerStore";
-import SetTimer from "../components/SetTimer";
-import Controls from "../components/Controls";
+import SetTimer from "../components/Countdown/SetTimer";
+import Controls from "../components/Countdown/Controls";
 
 const MainWrapper = styled.div`
   display: flex;
@@ -30,14 +30,13 @@ const SetTimers = [
 ];
 
 export default function Home() {
-  const context = useTimer();
+  const { currentTimer } = useTimer();
 
-  const formatedTimeMinutes = Math.floor(context.currentTimer / 60)
+  const formatedTimeMinutes = Math.floor(currentTimer / 60)
     .toString()
     .padStart(2, "0");
-  const formatedTimeSeconds = (context.currentTimer % 60)
-    .toString()
-    .padStart(2, "0");
+  const formatedTimeSeconds = (currentTimer % 60).toString().padStart(2, "0");
+
   return (
     <MainWrapper>
       <Title>Home</Title>
