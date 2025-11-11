@@ -7,8 +7,7 @@ import {
   manageCountDown,
   useTimer,
   useTimerDispatch,
-} from "../stores/TimerStore";
-import { useState } from "react";
+} from "../../stores/TimerStore";
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,10 +32,9 @@ export default function Controls() {
   const dispatch = useTimerDispatch();
   const { currentTimer, startTime, isRunning } = useTimer();
 
-  const [startingTime, setStartginTime] = useState<number | null>(null);
-
   const handleStart = () => {
-    setStartginTime(currentTimer);
+    if (currentTimer <= 0) return;
+    console.log(currentTimer);
     dispatch({
       type: "START_TIMER",
       startTime: startTime ?? currentTimer,
@@ -51,22 +49,24 @@ export default function Controls() {
       stopTime: currentTimer,
     });
     killInterval();
-    // manageCountDown(currentTimer, dispatch, false);
   };
 
   const handleReset = () => {
     killInterval();
     dispatch({ type: "RESET_TIMER" });
-    console.log(startingTime, currentTimer);
+    console.log(startTime, currentTimer);
     dispatch({
       type: "UPDATE_TIMER",
-      currentTimer: startingTime ?? currentTimer,
+      currentTimer: startTime ?? currentTimer,
+      startTime: startTime ?? currentTimer,
     });
   };
 
   return (
     <Wrapper>
-      <ControlButton $disabled={isRunning} onClick={handleStart}>
+      <ControlButton
+        $disabled={isRunning || currentTimer <= 0}
+        onClick={handleStart}>
         <FontAwesomeIcon icon={faPlay} />
       </ControlButton>
       <ControlButton onClick={handleStop}>

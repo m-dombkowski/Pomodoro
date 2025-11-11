@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useTimerDispatch } from "../stores/TimerStore";
+import { killInterval, useTimerDispatch } from "../../stores/TimerStore";
 
 const Input = styled.input`
   display: flex;
@@ -17,7 +17,15 @@ export default function SetTimer({
   const dispatch = useTimerDispatch();
 
   const setTimer = () => {
-    dispatch({ type: "UPDATE_TIMER", currentTimer: TimerValue });
+    killInterval();
+    dispatch({
+      type: "RESET_TIMER",
+    });
+    dispatch({
+      type: "UPDATE_TIMER",
+      currentTimer: TimerValue,
+      startTime: TimerValue,
+    });
   };
 
   return <Input onClick={setTimer} defaultValue={InputName} />;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { useTimer, useTimerDispatch } from "../stores/TimerStore";
+import { killInterval, useTimerDispatch } from "../../stores/TimerStore";
 
 const Input = styled.input<{ $primary?: boolean }>`
   padding: 10px;
@@ -13,7 +13,6 @@ const Form = styled.form`
 
 export default function CustomTimer() {
   const [timeValue, setTimeValue] = useState<number | null>(0);
-  const context = useTimer();
   const dispatch = useTimerDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,8 +21,15 @@ export default function CustomTimer() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch({ type: "UPDATE_TIMER", currentTimer: timeValue ?? 0 });
-    console.log(context.currentTimer);
+    killInterval();
+    dispatch({
+      type: "RESET_TIMER",
+    });
+    dispatch({
+      type: "UPDATE_TIMER",
+      currentTimer: timeValue ?? 0,
+      startTime: timeValue ?? 0,
+    });
   };
   return (
     <Form onSubmit={handleSubmit}>
