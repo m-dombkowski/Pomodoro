@@ -32,9 +32,8 @@ export default function Controls() {
   const dispatch = useTimerDispatch();
   const { currentTimer, startTime, isRunning } = useTimer();
 
-  const handleStart = () => {
+  const startCountdownHandler = () => {
     if (currentTimer <= 0) return;
-    console.log(currentTimer);
     dispatch({
       type: "START_TIMER",
       startTime: startTime ?? currentTimer,
@@ -43,7 +42,7 @@ export default function Controls() {
     manageCountDown(currentTimer, dispatch, true);
   };
 
-  const handleStop = () => {
+  const stopCountdownHandler = () => {
     dispatch({
       type: "STOP_TIMER",
       stopTime: currentTimer,
@@ -51,10 +50,9 @@ export default function Controls() {
     killInterval();
   };
 
-  const handleReset = () => {
+  const resetCountdownHandler = () => {
     killInterval();
     dispatch({ type: "RESET_TIMER" });
-    console.log(startTime, currentTimer);
     dispatch({
       type: "UPDATE_TIMER",
       currentTimer: startTime ?? currentTimer,
@@ -66,13 +64,13 @@ export default function Controls() {
     <Wrapper>
       <ControlButton
         $disabled={isRunning || currentTimer <= 0}
-        onClick={handleStart}>
+        onClick={startCountdownHandler}>
         <FontAwesomeIcon icon={faPlay} />
       </ControlButton>
-      <ControlButton onClick={handleStop}>
+      <ControlButton onClick={stopCountdownHandler}>
         <FontAwesomeIcon icon={faPause} />
       </ControlButton>
-      <ControlButton onClick={handleReset}>
+      <ControlButton onClick={resetCountdownHandler}>
         <FontAwesomeIcon icon={faRepeat} />
       </ControlButton>
     </Wrapper>

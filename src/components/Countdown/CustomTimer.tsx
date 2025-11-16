@@ -19,7 +19,7 @@ export default function CustomTimer() {
     setTimeValue(e.target.valueAsNumber / 1000); // Convert milliseconds to seconds
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const setCustomTimerHandler = (e: React.FormEvent) => {
     e.preventDefault();
     killInterval();
     dispatch({
@@ -32,7 +32,7 @@ export default function CustomTimer() {
     });
   };
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={setCustomTimerHandler}>
       <Input
         placeholder="Type time value "
         type="time"
