@@ -5,8 +5,8 @@ import { createContext, useContext, useReducer } from "react";
 
 type Timer = {
   isRunning: boolean;
-  startTime: number | null;
-  elapsedTime: number | null;
+  startTime: number;
+  elapsedTime: number;
   currentTimer: number;
 };
 type TimerAction =
@@ -21,8 +21,8 @@ type TimerAction =
 
 const initialTimer: Timer = {
   isRunning: false,
-  startTime: null,
-  elapsedTime: null,
+  startTime: 0,
+  elapsedTime: 0,
   currentTimer: 0,
 };
 const TimerContext = createContext<Timer | null>(null);
@@ -57,13 +57,12 @@ const timerReducer = (timer: Timer, action: TimerAction) => {
       return {
         ...timer,
         isRunning: false,
-        elapsedTime:
-          (timer.elapsedTime ?? 0) + (action.stopTime - (timer.startTime ?? 0)),
+        elapsedTime: (timer.startTime ?? 0) - timer.currentTimer,
       };
     case "RESET_TIMER":
       return {
         isRunning: false,
-        startTime: null,
+        startTime: 0,
         elapsedTime: 0,
         currentTimer: 0,
       };
@@ -73,6 +72,8 @@ const timerReducer = (timer: Timer, action: TimerAction) => {
         ...timer,
         currentTimer: action.currentTimer,
         startTime: action.startTime ?? timer.startTime,
+        elapsedTime:
+          (action.startTime ?? timer.startTime) - action.currentTimer,
       };
 
     default: {
@@ -109,7 +110,6 @@ export const manageCountDown = (
   interval = setInterval(() => {
     if (timeLeft && updateVisual) {
       timeLeft--;
-
       updateVisual({ type: "UPDATE_TIMER", currentTimer: timeLeft });
 
       if (timeLeft <= 0) {
