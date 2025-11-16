@@ -3,6 +3,7 @@ import CustomTimer from "../components/Countdown/CustomTimer";
 import { useTimer } from "../stores/TimerStore";
 import SetTimer from "../components/Countdown/SetTimer";
 import Controls from "../components/Countdown/Controls";
+import CountdownBar from "../components/Countdown/CountdownBar";
 
 const MainWrapper = styled.div`
   display: flex;
@@ -43,6 +44,7 @@ export default function Home() {
       <Title>
         {formatedTimeMinutes}:{formatedTimeSeconds}{" "}
       </Title>
+      <CountdownBar />
       <Controls />
       <InnerWrapper>
         <CustomTimer />
